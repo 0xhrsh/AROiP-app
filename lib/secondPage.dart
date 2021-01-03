@@ -22,7 +22,7 @@ class UnityTestingState extends State<UnityTestingWrapper> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Unity Flutter Demo'),
+          title: const Text('AROiP'),
         ),
         body: Card(
           margin: const EdgeInsets.all(8),
@@ -33,7 +33,7 @@ class UnityTestingState extends State<UnityTestingWrapper> {
           child: Stack(
             children: <Widget>[
               UnityWidget(
-                // onUnityViewCreated: onUnityCreated,
+                onUnityCreated: _onUnityCreated,
                 isARScene: true,
               ),
               Positioned(
@@ -80,5 +80,9 @@ class UnityTestingState extends State<UnityTestingWrapper> {
       'SetRotationSpeed',
       speed,
     );
+  }
+
+  void _onUnityCreated(controller) {
+    this._unityWidgetController = controller;
   }
 }
