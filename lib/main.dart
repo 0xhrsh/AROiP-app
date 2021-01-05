@@ -1,5 +1,7 @@
+import 'package:aroip/widgets/theme.dart';
+import 'package:aroip/widgets/widget.dart';
 import 'package:flutter/material.dart';
-import 'package:aroip/secondPage.dart';
+import 'package:aroip/screens/secondPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,12 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'AROiP',
       theme: ThemeData(
+        scaffoldBackgroundColor: Color(0xff1F1F1F),
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Join AR Call'),
     );
   }
 }
@@ -29,27 +32,86 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+// class _MyHomePageState extends State<MyHomePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(widget.title),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             MaterialButton(
+//               child: Text("Go to unity test"),
+//               minWidth: double.infinity,
+//               onPressed: () async {
+//                 Navigator.of(context).push((MaterialPageRoute(
+//                     builder: (BuildContext context) => UnityTestingWrapper())));
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
+      appBar: appBarMain(context),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+          children: [
+            Spacer(),
+            Form(
+              child: Column(
+                children: [
+                  TextFormField(
+                    style: simpleTextStyle(),
+                    decoration: textFieldInputDecoration("Name"),
+                  ),
+                  TextFormField(
+                    style: simpleTextStyle(),
+                    decoration: textFieldInputDecoration("Conference ID"),
+                  ),
+                ],
+              ),
             ),
-            MaterialButton(
-              child: Text("Go to unity test"),
-              minWidth: double.infinity,
-              onPressed: () async {
-                Navigator.of(context).push((MaterialPageRoute(
-                    builder: (BuildContext context) => UnityTestingWrapper())));
+            SizedBox(
+              height: 16,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            GestureDetector(
+              onTap: () {
+                //TODO
               },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xff007EF4),
+                        const Color(0xff2A75BC)
+                      ],
+                    )),
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  "Join In",
+                  style: biggerTextStyle(),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 100,
             ),
           ],
         ),
