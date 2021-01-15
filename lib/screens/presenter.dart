@@ -1,12 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-class UnityTestingWrapper extends StatefulWidget {
-  UnityTestingState createState() => UnityTestingState();
+class UnityWrapper extends StatefulWidget {
+  UnityState createState() => UnityState();
 }
 
-class UnityTestingState extends State<UnityTestingWrapper> {
+class UnityState extends State<UnityWrapper> {
   UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 
@@ -53,6 +54,10 @@ class UnityTestingState extends State<UnityTestingWrapper> {
                           setState(() {
                             _sliderValue = value;
                           });
+                          FirebaseFirestore.instance
+                              .collection('cube')
+                              .doc('8nnDZgRWjvnpOG8TiSkg')
+                              .set({'speed': value});
                           setRotationSpeed(value.toString());
                         },
                         value: _sliderValue,

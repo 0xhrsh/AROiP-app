@@ -42,3 +42,7 @@ app.*.map.json
 
 # Unity Builds
 */unityLibrary/**
+
+
+# My Files
+google-services.json
