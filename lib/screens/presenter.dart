@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-class UnityWrapper extends StatefulWidget {
-  UnityState createState() => UnityState();
+class UnityPresentingWrapper extends StatefulWidget {
+  UnityPresentingState createState() => UnityPresentingState();
 }
 
-class UnityState extends State<UnityWrapper> {
+class UnityPresentingState extends State<UnityPresentingWrapper> {
   UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 

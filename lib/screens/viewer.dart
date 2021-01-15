@@ -4,11 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-class UnityTestingWrapper extends StatefulWidget {
-  UnityTestingState createState() => UnityTestingState();
+class UnityViewingWrapper extends StatefulWidget {
+  UnityViewingState createState() => UnityViewingState();
 }
 
-class UnityTestingState extends State<UnityTestingWrapper> {
+class UnityViewingState extends State<UnityViewingWrapper> {
   UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 
@@ -21,7 +21,6 @@ class UnityTestingState extends State<UnityTestingWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    double a = 2.5;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(

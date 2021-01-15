@@ -30,20 +30,3 @@ InputDecoration textFieldInputDecoration(String hintText) {
 TextStyle biggerTextStyle() {
   return TextStyle(color: Colors.white, fontSize: 17);
 }
-
-Widget getSpeed(BuildContext context) {
-  var speed = 0;
-  return new StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('cube')
-          .doc('8nnDZgRWjvnpOG8TiSkg')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return new Text("0");
-        }
-        var userDocument = snapshot.data;
-        speed = userDocument["speed"];
-        return new Text(userDocument["speed"].toString());
-      });
-}

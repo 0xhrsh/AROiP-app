@@ -3,6 +3,7 @@ import 'package:aroip/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:aroip/screens/presenter.dart';
 import 'package:aroip/screens/viewer.dart';
 
 void main() async {
@@ -48,14 +49,22 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             MaterialButton(
-              child: Text("Go to unity test1"),
+              child: Text("Present"),
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
-                    builder: (BuildContext context) => UnityTestingWrapper())));
+                    builder: (BuildContext context) =>
+                        UnityPresentingWrapper())));
               },
             ),
-            getSpeed(context)
+            MaterialButton(
+              child: Text("View"),
+              minWidth: double.infinity,
+              onPressed: () async {
+                Navigator.of(context).push((MaterialPageRoute(
+                    builder: (BuildContext context) => UnityViewingWrapper())));
+              },
+            ),
           ],
         ),
       ),
