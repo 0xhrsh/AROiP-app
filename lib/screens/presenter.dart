@@ -37,37 +37,50 @@ class UnityPresentingState extends State<UnityPresentingWrapper> {
                 onUnityCreated: _onUnityCreated,
                 isARScene: true,
               ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                child: Card(
-                  elevation: 10,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: Text("Rotation speed:"),
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('cube')
+                      .doc('8nnDZgRWjvnpOG8TiSkg')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return new Text("0");
+                    }
+                    var userDocument = snapshot.data;
+                    setRotationSpeed(userDocument["speed"].toString());
+
+                    return Positioned(
+                      bottom: 20,
+                      left: 20,
+                      right: 20,
+                      child: Card(
+                        elevation: 10,
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Text("Rotation speed:"),
+                            ),
+                            Slider(
+                              onChanged: (value) {
+                                setState(() {
+                                  _sliderValue = value;
+                                  FirebaseFirestore.instance
+                                      .collection('cube')
+                                      .doc('8nnDZgRWjvnpOG8TiSkg')
+                                      .set({'speed': value});
+                                  setRotationSpeed(value.toString());
+                                });
+                              },
+                              value: userDocument["speed"].toDouble(),
+                              min: 0,
+                              max: 20,
+                            ),
+                          ],
+                        ),
                       ),
-                      Slider(
-                        onChanged: (value) {
-                          setState(() {
-                            _sliderValue = value;
-                          });
-                          FirebaseFirestore.instance
-                              .collection('cube')
-                              .doc('8nnDZgRWjvnpOG8TiSkg')
-                              .set({'speed': value});
-                          setRotationSpeed(value.toString());
-                        },
-                        value: _sliderValue,
-                        min: 0,
-                        max: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    );
+                  }),
             ],
           ),
         ),
