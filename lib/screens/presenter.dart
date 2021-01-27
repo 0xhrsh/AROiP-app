@@ -9,7 +9,10 @@ class UnityPresentingWrapper extends StatefulWidget {
 
 class UnityPresentingState extends State<UnityPresentingWrapper> {
   UnityWidgetController _unityWidgetController;
-  double _sliderValue = 0.0;
+  double _sliderValue = 0;
+  double os = 0.1;
+  int t;
+  Stopwatch stopwatch = new Stopwatch()..start();
 
   get onUnityMessage => null;
 
@@ -48,6 +51,23 @@ class UnityPresentingState extends State<UnityPresentingWrapper> {
                     }
                     var userDocument = snapshot.data;
                     setRotationSpeed(userDocument["speed"].toString());
+                    if (os != userDocument["speed"]) {
+                      os = userDocument["speed"];
+
+                      int n = userDocument["n"];
+                      int tl = userDocument["tl"];
+                      t = stopwatch.elapsedMilliseconds;
+
+                      FirebaseFirestore.instance
+                          .collection('cube')
+                          .doc('8nnDZgRWjvnpOG8TiSkg')
+                          .update({
+                        'check': userDocument["speed"],
+                        'latency': (tl + t) / (n + 1),
+                        'n': n + 1,
+                        'tl': tl + t
+                      });
+                    }
 
                     return Positioned(
                       bottom: 20,
@@ -64,15 +84,19 @@ class UnityPresentingState extends State<UnityPresentingWrapper> {
                             Slider(
                               onChanged: (value) {
                                 setState(() {
+                                  stopwatch.reset();
                                   _sliderValue = value;
+                                  stopwatch.reset();
+                                  os = userDocument["speed"];
                                   FirebaseFirestore.instance
                                       .collection('cube')
                                       .doc('8nnDZgRWjvnpOG8TiSkg')
-                                      .set({'speed': value});
-                                  setRotationSpeed(value.toString());
+                                      .update({'speed': _sliderValue});
+                                  setRotationSpeed(_sliderValue.toString());
                                 });
                               },
-                              value: userDocument["speed"].toDouble(),
+                              // value: 0,
+                              value: _sliderValue,
                               min: 0,
                               max: 20,
                             ),
