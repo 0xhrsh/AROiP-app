@@ -210,7 +210,10 @@ class SocketClientState extends State<SocketClient> {
   }
 
   void sendMessage(String message) {
-    clientSocket.write("$message\n");
+    clientSocket.write(DateTime.now().toString() + "\n");
+    // .millisecondsSinceEpoch
+    // clientSocket.write(
+    //     "    {\"objs\":[{\"id\":1,\"x\":1,\"y\":1,\"z\":1,\"px\":1,\"py\":1,\"pz\":1},{\"id\":1,\"x\":1,\"y\":1,\"z\":1,\"px\":1,\"py\":1,\"pz\":1}]}\n");
   }
 
   void _storeServerIP() async {
@@ -227,11 +230,15 @@ class SocketClientState extends State<SocketClient> {
 
   void submitMessage() {
     if (msgCon.text.isEmpty) return;
-    setState(() {
-      items.insert(0, MessageItem(localIP, msgCon.text));
-    });
-    sendMessage(msgCon.text);
-    msgCon.clear();
+    for (var i = 0; i < 10; i++) {
+      msgCon.text = i.toString();
+      setState(() {
+        items.insert(0, MessageItem(localIP, msgCon.text));
+      });
+      sendMessage(msgCon.text);
+      sleep(Duration(milliseconds: 50));
+      msgCon.clear();
+    }
   }
 
   showSnackBarWithKey(String message) {

@@ -140,12 +140,27 @@ class SocketServerState extends State<SocketServer> {
 
     clientSocket.listen(
       (onData) {
-        print(String.fromCharCodes(onData).trim());
+        // print("here: " + String.fromCharCodes(onData).trim());
         setState(() {
+          // var stime = String.fromCharCodes(onData).trim();
+          var ttime = DateTime.parse(String.fromCharCodes(onData).trim());
+          var rtime = DateTime.now();
+          // print();
+          // items.insert(
+          //     0,
+          //     MessageItem(
+          //         clientSocket.remoteAddress.address, rtime.toString()));
           items.insert(
               0,
               MessageItem(clientSocket.remoteAddress.address,
-                  String.fromCharCodes(onData).trim()));
+                  rtime.difference(ttime).inMilliseconds.toString()));
+          // items.insert(
+          //     0,
+          //     MessageItem(clientSocket.remoteAddress.address,
+          //         String.fromCharCodes(onData).trim()));
+
+          // print(String.fromCharCodes(onData).trim());
+          // print(rtime.difference(stime).inMilliseconds.toString());
         });
       },
       onError: (e) {

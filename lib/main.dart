@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 // import 'package:web_socket_channel/io.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +15,18 @@ class MyApp extends StatelessWidget {
     final title = 'WebSocket Demo';
     return MaterialApp(
       title: title,
-      home: SocketClient(),
+      home: MyHomePage(title: 'Join AR Call'),
     );
   }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -34,8 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        UnityPresentingWrapper())));
+                    builder: (BuildContext context) => SocketServer())));
               },
             ),
             MaterialButton(
@@ -43,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
-                    builder: (BuildContext context) => UnityViewingWrapper())));
+                    builder: (BuildContext context) => SocketClient())));
               },
             ),
           ],
