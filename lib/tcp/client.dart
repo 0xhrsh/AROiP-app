@@ -5,6 +5,11 @@ import 'package:get_ip/get_ip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SocketClientState pageState;
+int msgs = 0;
+var ftime;
+var ltime;
+var times = 100000;
+var ltc = 0;
 
 class SocketClient extends StatefulWidget {
   @override
@@ -173,12 +178,44 @@ class SocketClientState extends State<SocketClient> {
           "Connected to ${socket.remoteAddress.address}:${socket.remotePort}");
       socket.listen(
         (onData) {
-          print(String.fromCharCodes(onData).trim());
+          // print(String.fromCharCodes(onData).trim().split("\n"));
+
           setState(() {
-            items.insert(
-                0,
-                MessageItem(clientSocket.remoteAddress.address,
-                    String.fromCharCodes(onData).trim()));
+            // var rtime = DateTime.now();
+            // var stime = DateTime.now();
+            // var stime = DateTime.parse(
+            // String.fromCharCodes(onData).trim().split("\n").first);
+
+            // items.insert(
+            //     0,
+            //     MessageItem(clientSocket.remoteAddress.address,
+            //         String.fromCharCodes(onData).trim()));
+
+            ltime = DateTime.now();
+
+            var pkgs = String.fromCharCodes(onData).trim().split("\n");
+            // msgs += pkgs.length;
+
+            // for (var i = 0; i < pkgs.length; i++) {}
+            try {
+              ltc += ltime
+                  .difference(DateTime.parse(pkgs[pkgs.length - 1]))
+                  .inMilliseconds;
+              msgs++;
+            } on FormatException {
+              // msgs--;
+            }
+
+            if (msgs > 0) {
+              items.insert(
+                  0,
+                  MessageItem(clientSocket.remoteAddress.address,
+                      (ltc / msgs).toString()));
+
+              print(msgs);
+            }
+
+            // rtime.difference(stime).inMilliseconds.toString()
           });
         },
         onDone: onDone,
@@ -230,15 +267,27 @@ class SocketClientState extends State<SocketClient> {
 
   void submitMessage() {
     if (msgCon.text.isEmpty) return;
-    for (var i = 0; i < 10; i++) {
-      msgCon.text = i.toString();
-      setState(() {
-        items.insert(0, MessageItem(localIP, msgCon.text));
-      });
+    msgs = 0;
+    ltc = 0;
+    var stime = DateTime.now();
+
+    for (var i = 0; i < times; i++) {
+      // msgCon.text = i.toString();
+      // setState(() {
+      //   items.insert(0, MessageItem(localIP, msgCon.text));
+      // });
+      // sleep(Duration(milliseconds: 10));
       sendMessage(msgCon.text);
-      sleep(Duration(milliseconds: 50));
+
       msgCon.clear();
     }
+    print("All done in..." +
+        DateTime.now().difference(stime).inMilliseconds.toString() +
+        " ms");
+    print("Sending updates after avg: " +
+        (DateTime.now().difference(stime).inMilliseconds / (times - 1))
+            .toString() +
+        " ms");
   }
 
   showSnackBarWithKey(String message) {
