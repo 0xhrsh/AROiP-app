@@ -6,10 +6,11 @@ import os
 import ntplib
 import random
 
+
 class Client:
 
     def start(self):
-        
+
         TCP_IP = '192.168.1.69'
         TCP_PORT = 5005
         BUFFER_SIZE = 1024
@@ -17,7 +18,7 @@ class Client:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
 
-        fileName = "latencyViewerTCP{}.txt".format(random.randint(0,1000))
+        fileName = "latencyViewerTCP{}.txt".format(random.randint(0, 1000))
         f = open(fileName, 'w')
 
         try:
@@ -27,19 +28,19 @@ class Client:
                 t = data.split(":")[1]
                 line = str(client_time - float(t)) + "\n"
                 f.write(line)
-                print(line)
-
+                # print(line)
 
         except KeyboardInterrupt:
-            s.close() # On pressing ctrl + c, we close all connections
-            quit() # Then we shut down the server
+            s.close()  # On pressing ctrl + c, we close all connections
+            quit()  # Then we shut down the server
 
 
 if __name__ == '__main__':
     try:
         client = ntplib.NTPClient()
         response = client.request('in.pool.ntp.org')
-        os.system('date ' + time.strftime('%m%d%H%M%Y.%S',time.localtime(response.tx_time)))
+        os.system('date ' + time.strftime('%m%d%H%M%Y.%S',
+                                          time.localtime(response.tx_time)))
     except:
         print('Could not sync with time server.')
     client = Client()
