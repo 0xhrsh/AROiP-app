@@ -7,7 +7,7 @@ FORMAT_STRING = "Please give operation in the correct form. Example: 1 <space> +
 
 class HTTPServer:
 
-    def __init__(self, host='127.0.0.1', port=5005):
+    def __init__(self, host='192.168.1.69', port=5005):
         self.host = host
         self.port = port
 
@@ -39,6 +39,6 @@ class HTTPServer:
         client_time = request.method.split(":")[0] # We assume the operands will be space seperated
 
         server_time = time.time()
-        MESSAGE = "" + str(server_time) + ":" +request.method.split(":")[1] + ":" +request.method.split(":")[1]
+        MESSAGE = "" + str(server_time) + ":" + client_time + ":" +request.method.split(":")[1]
 
         return MESSAGE.encode('utf8')

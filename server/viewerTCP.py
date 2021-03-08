@@ -20,7 +20,7 @@ class Client:
             while True:
                 data = s.recv(1024)
                 client_time = time.time()
-                t = data.split(":")[0]
+                t = data.split(":")[1]
                 print("Difference by:", client_time - float(t))
 
 
