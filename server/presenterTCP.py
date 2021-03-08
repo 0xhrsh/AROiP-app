@@ -9,7 +9,7 @@ class Client:
 
     def start(self):
         
-        TCP_IP = '127.0.0.1'
+        TCP_IP = '192.168.1.69'
         TCP_PORT = 5005
         BUFFER_SIZE = 1024
         SLEEP_TIME = 1
@@ -17,16 +17,17 @@ class Client:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
 
-        fileName = "latencyAdminTCP.txt"
+        fileName = "latencyPresenterTCP.txt"
         f = open(fileName, 'w')
         try:
             while True:
                 client_time = time.time()
                 MESSAGE = "" + str(client_time) + ":" + "Data"
                 s.send(MESSAGE.encode("utf8"))
-                data = s.recv(1024)
-                t = float(data.split(":")[0])
+                data = s.recv(1024).decode('utf8')
                 curr_time = time.time()
+                t = float(data.split(":")[0])
+                client_time = float(data.split(":")[1])
                 line = str(curr_time - client_time) + " " + str(curr_time - t) + " " + str(t - client_time) + "\n"
                 print(line)
                 f.write(line)

@@ -4,24 +4,30 @@ import socket
 import time
 import os
 import ntplib
+import random
 
 class Client:
 
     def start(self):
         
-        TCP_IP = '127.0.0.1'
+        TCP_IP = '192.168.1.69'
         TCP_PORT = 5005
         BUFFER_SIZE = 1024
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
 
+        fileName = "latencyViewerTCP{}.txt".format(random.randint(0,1000))
+        f = open(fileName, 'w')
+
         try:
             while True:
-                data = s.recv(1024)
+                data = s.recv(1024).decode('utf8')
                 client_time = time.time()
                 t = data.split(":")[1]
-                print("Difference by:", client_time - float(t))
+                line = str(client_time - float(t)) + "\n"
+                f.write(line)
+                print(line)
 
 
         except KeyboardInterrupt:
