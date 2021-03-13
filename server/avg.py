@@ -1,5 +1,5 @@
 import glob   
-path = 'data/latencyViewerTCP*'
+path = 'data_udp/400/latencyViewerUDP*'
 files=glob.glob(path)   
 total = 0
 n = 0

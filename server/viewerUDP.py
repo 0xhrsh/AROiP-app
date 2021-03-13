@@ -19,7 +19,7 @@ class Client:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         s.bind(("", UDP_PORT))
 
-        fileName = "data/latencyViewerTCP{}.txt".format(random.randint(0, 1000))
+        fileName = "data_udp/400/latencyViewerUDP{}.txt".format(random.randint(0, 10000))
         f = open(fileName, 'w')
         
 
