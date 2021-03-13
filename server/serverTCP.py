@@ -2,8 +2,8 @@ from HTTPServer import HTTPServer
 import socket
 import threading
 import ntplib
-import os, time
-
+import os
+import time
 
 class Server(HTTPServer):
 

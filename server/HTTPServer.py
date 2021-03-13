@@ -39,6 +39,6 @@ class HTTPServer:
         client_time = request.method.split(":")[0] # We assume the operands will be space seperated
 
         server_time = time.time()
-        MESSAGE = "" + str(server_time) + ":" + client_time + ":" +request.method.split(":")[1]
+        MESSAGE = "" + str(server_time) + ":" +request.method.split(":")[0] + ":" +request.method.split(":")[1]
 
         return MESSAGE.encode('utf8')
