@@ -18,8 +18,6 @@ class Client:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
 
-        fileName = "latencyPresenterTCP.txt"
-        f = open(fileName, 'w')
         try:
             while True:
                 client_time = time.time()
@@ -32,11 +30,9 @@ class Client:
                 line = str(curr_time - client_time) + "\n"
                 #  + " " + str(curr_time - t) + " " + str(t - client_time)
                 # print(line)
-                f.write(line)
                 time.sleep(SLEEP_TIME)
 
         except KeyboardInterrupt:
-            f.close()
             s.close()  # On pressing ctrl + c, we close all connections
             quit()  # Then we shut down the server
 

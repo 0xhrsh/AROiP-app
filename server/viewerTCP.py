@@ -18,7 +18,7 @@ class Client:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
 
-        fileName = "latencyViewerTCP{}.txt".format(random.randint(0, 1000))
+        fileName = "data_tcp/50/latencyViewerTCP{}.txt".format(random.randint(0, 10000))
         f = open(fileName, 'w')
 
         try:
@@ -35,13 +35,13 @@ class Client:
             quit()  # Then we shut down the server
 
 
-if __name__ == '__main__':
-    try:
-        client = ntplib.NTPClient()
-        response = client.request('in.pool.ntp.org')
-        os.system('date ' + time.strftime('%m%d%H%M%Y.%S',
-                                          time.localtime(response.tx_time)))
-    except:
-        print('Could not sync with time server.')
+def run():
+    # try:
+    #     client = ntplib.NTPClient()
+    #     response = client.request('in.pool.ntp.org')
+    #     os.system('date ' + time.strftime('%m%d%H%M%Y.%S',
+    #                                       time.localtime(response.tx_time)))
+    # except:
+    #     print('Could not sync with time server.')
     client = Client()
     client.start()
