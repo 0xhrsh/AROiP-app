@@ -4,6 +4,7 @@ import socket
 import time
 import os
 import ntplib
+import random
 
 class Client:
 
@@ -18,7 +19,7 @@ class Client:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         s.bind(("", UDP_PORT))
 
-        fileName = "latencyViewerTCP{}.txt".format(random.randint(0, 1000))
+        fileName = "data/latencyViewerTCP{}.txt".format(random.randint(0, 1000))
         f = open(fileName, 'w')
         
 
@@ -26,8 +27,9 @@ class Client:
             while True:
                 data, addr = s.recvfrom(1024)
                 client_time = time.time()
-                t = data.split(":")[0]
-                print("Difference by:", client_time - float(t))
+                data = data.decode('utf8')
+                t = data.split(":")[1]
+                # print("Difference by:", client_time - float(t))
                 line = str(client_time - float(t)) + "\n"
                 f.write(line)
 
@@ -38,12 +40,13 @@ class Client:
             quit() # Then we shut down the server
 
 
-if __name__ == '__main__':
-    try:
-        client = ntplib.NTPClient()
-        response = client.request('in.pool.ntp.org')
-        os.system('date ' + time.strftime('%m%d%H%M%Y.%S',time.localtime(response.tx_time)))
-    except:
-        print('Could not sync with time server.')
+# if __name__ == '__main__':
+def run():
+    # try:
+    #     client = ntplib.NTPClient()
+    #     response = client.request('in.pool.ntp.org')
+    #     os.system('date ' + time.strftime('%m%d%H%M%Y.%S',time.localtime(response.tx_time)))
+    # except:
+    #     print('Could not sync with time server.')
     client = Client()
     client.start()
