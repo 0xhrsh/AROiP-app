@@ -1,6 +1,9 @@
 from HTTPServer import HTTPServer
 import socket
 import threading
+import ntplib
+import time
+import os
 
 
 class Server(HTTPServer):
@@ -12,7 +15,7 @@ class Server(HTTPServer):
         try:
             while True:
                 msg = (yield)
-                print("Send message",msg)
+                # print("Send message",msg)
                 sender.sendto(msg, ('<broadcast>', 5006))
         except GeneratorExit:
             sender.close()
@@ -37,7 +40,7 @@ class Server(HTTPServer):
         try:
             while True:
                 data, addr = s.recvfrom(1024)
-                print("Connected by", addr)
+                # print("Connected by", addr)
                 # threads.append(conn)
                 # t = threading.Thread( # we start a thread for each new client
                 #     target=self.handle_UDP_connection, args=(data), daemon=True)
