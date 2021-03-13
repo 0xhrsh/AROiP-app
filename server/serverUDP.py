@@ -5,16 +5,34 @@ import threading
 
 class Server(HTTPServer):
 
+    def msgSender(self):
+        sender = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sender.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sender.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        try:
+            while True:
+                msg = (yield)
+                print("Send message",msg)
+                sender.sendto(msg, ('<broadcast>', 5006))
+        except GeneratorExit:
+            sender.close()
+
     def start(self):
+
+        # Presenter - 5005
+        # Viewer - 5006
 
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        s.bind((self.host, self.port))
+        s.bind((self.host, 5005))
         # Here we don't close the socket, therefore multiple clients can connect
         print("Listening at", s.getsockname())
 
-        # threads = []
+        sendData = self.msgSender()
+
+        sendData.__next__()
+        
 
         try:
             while True:
@@ -24,12 +42,12 @@ class Server(HTTPServer):
                 # t = threading.Thread( # we start a thread for each new client
                 #     target=self.handle_UDP_connection, args=(data), daemon=True)
                 # t.start()
-                self.handle_UDP_connection(s, data)
+                msg = self.handle_request(data, [])
+                sendData.send(msg)
 
         except KeyboardInterrupt:
+            sendData.close()
             s.close()  # On pressing ctrl + c, we close all connections
-            for conn in threads:
-                conn.close()
             quit()  # Then we shut down the server
 
 
