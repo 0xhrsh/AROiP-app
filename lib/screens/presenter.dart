@@ -1,14 +1,16 @@
 import 'dart:io';
+
 import 'package:aroip/widgets/widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-class UnityViewingWrapper extends StatefulWidget {
-  UnityViewingState createState() => UnityViewingState();
+class UnityPresentingWrapper extends StatefulWidget {
+  UnityPresentingState createState() => UnityPresentingState();
 }
 
-class UnityViewingState extends State<UnityViewingWrapper> {
+class UnityPresentingState extends State<UnityPresentingWrapper> {
   UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
   Socket clientSocket = null;
@@ -67,6 +69,7 @@ class UnityViewingState extends State<UnityViewingWrapper> {
               onChanged: (value) {
                 setState(() {
                   _sliderValue = value;
+                  sendUpdate(value.toString());
                   // setRotationSpeed(_sliderValue.toString());
                 });
               },
@@ -159,6 +162,10 @@ class UnityViewingState extends State<UnityViewingWrapper> {
     print("onError: $e");
     // showSnackBarWithKey(e.toString());
     disconnectFromServer();
+  }
+
+  void sendUpdate(String message) {
+    clientSocket.write("$message\n");
   }
 
   void disconnectFromServer() {
