@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:aroip/widgets/widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
@@ -68,7 +66,7 @@ class UnityViewingState extends State<UnityViewingWrapper> {
             Slider(
               onChanged: (value) {
                 setState(() {
-                  _sliderValue = value;
+                  _sliderValue = _sliderValue;
                   // setRotationSpeed(_sliderValue.toString());
                 });
               },
