@@ -170,7 +170,7 @@ class UnityPresentingState extends State<UnityPresentingWrapper> {
 
   void disconnectFromServer() {
     print("disconnectFromServer");
-
+    clientSocket.write("quit\n");
     clientSocket.close();
     setState(() {
       clientSocket = null;
