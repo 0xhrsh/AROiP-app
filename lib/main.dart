@@ -1,10 +1,9 @@
-import 'package:aroip/widgets/theme.dart';
-import 'package:aroip/widgets/widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:aroip/screens/presenter.dart';
 import 'package:aroip/screens/viewer.dart';
+import 'package:aroip/screens/presenter_lungs.dart';
+import 'package:aroip/screens/viewer_lungs.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'AROiP',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff1F1F1F),
+        // scaffoldBackgroundColor: Color(0xff1F1F1F),
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
@@ -49,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             MaterialButton(
-              child: Text("Present"),
+              child: Text("Teacher"),
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
@@ -58,11 +57,29 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             MaterialButton(
-              child: Text("View"),
+              child: Text("Student"),
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
                     builder: (BuildContext context) => UnityViewingWrapper())));
+              },
+            ),
+            MaterialButton(
+              child: Text("Teacher Lungs"),
+              minWidth: double.infinity,
+              onPressed: () async {
+                Navigator.of(context).push((MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        UnityPresentingWrapperL())));
+              },
+            ),
+            MaterialButton(
+              child: Text("Student Lungs"),
+              minWidth: double.infinity,
+              onPressed: () async {
+                Navigator.of(context).push((MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        UnityViewingWrapperL())));
               },
             ),
           ],

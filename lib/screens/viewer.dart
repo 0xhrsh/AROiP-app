@@ -26,7 +26,7 @@ class UnityViewingState extends State<UnityViewingWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Viewer")),
+        appBar: AppBar(title: Text("Student")),
         body: Card(
             margin: const EdgeInsets.all(8),
             clipBehavior: Clip.antiAlias,
@@ -35,7 +35,7 @@ class UnityViewingState extends State<UnityViewingWrapper> {
             ),
             child: Stack(
               children: [
-                connectArea(),
+                // connectArea(),
                 // Padding(
                 //   padding: const EdgeInsets.only(top: 2000),
                 // ),
@@ -48,82 +48,6 @@ class UnityViewingState extends State<UnityViewingWrapper> {
             )));
   }
 
-  Widget unityArea() {
-    return Scaffold(
-      // key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text('Simple Screen'),
-      ),
-      body: Card(
-          margin: const EdgeInsets.all(8),
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Stack(
-            children: [
-              UnityWidget(
-                onUnityCreated: _onUnityCreated,
-                onUnityMessage: onUnityMessage,
-                // onUnitySceneLoaded: onUnitySceneLoaded,
-              ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                child: Card(
-                  elevation: 10,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: Text("Rotation speed:"),
-                      ),
-                      Slider(
-                        onChanged: (value) {
-                          setState(() {
-                            _sliderValue = value;
-                          });
-                          setRotationSpeed(value.toString());
-                        },
-                        value: _sliderValue,
-                        min: 0,
-                        max: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          )),
-    );
-  }
-
-  // Widget unityArea() {
-  //   return Scaffold(
-  //       body: Card(
-  //     margin: const EdgeInsets.all(8),
-  //     clipBehavior: Clip.antiAlias,
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.circular(20.0),
-  //     ),
-  //     child: Stack(
-  //       children: <Widget>[
-  //         UnityWidget(
-  //           onUnityCreated: _onUnityCreated,
-  //           isARScene: true,
-  //         ),
-
-  //         // setRotationSpeed(_sliderValue.toString());
-
-  //         // )
-  //       ],
-  //     ),
-  //   ));
-  //   // );
-  // }
-
-  // @override
   Widget sliderArea() {
     return Positioned(
       // top: 350,
@@ -136,13 +60,13 @@ class UnityViewingState extends State<UnityViewingWrapper> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: Text("Rotation speed:"),
+              child: Text("Force Applied:"),
             ),
             Slider(
               onChanged: (value) {
                 setState(() {
                   _sliderValue = _sliderValue;
-                  setRotationSpeed(_sliderValue.toString());
+                  setRotationSpeed((_sliderValue / 1.15).toString());
                 });
               },
               value: _sliderValue,
@@ -217,7 +141,7 @@ class UnityViewingState extends State<UnityViewingWrapper> {
 
             try {
               _sliderValue = double.parse(pkgs[pkgs.length - 1]);
-              setRotationSpeed(_sliderValue.toString());
+              setRotationSpeed((_sliderValue / 1.15).toString());
             } on FormatException {
               // do some error handling here
             }
