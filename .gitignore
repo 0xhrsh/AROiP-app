@@ -42,6 +42,7 @@ app.*.map.json
 
 # Unity Builds
 */unityLibrary/**
+*/VuforiaWrapper/*
 
 
 # My Files

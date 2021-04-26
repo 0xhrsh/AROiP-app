@@ -20,40 +20,37 @@ class UnityPresentingState extends State<UnityPresentingWrapper> {
   @override
   void initState() {
     super.initState();
+    connectToServer();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Presenter")),
-        body: Column(
-          children: <Widget>[
-            connectArea(),
-            unityArea(),
-          ],
-        ));
+        appBar: AppBar(title: Text("Teacher")),
+        body: Card(
+            margin: const EdgeInsets.all(8),
+            clipBehavior: Clip.antiAlias,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Stack(
+              children: [
+                // connectArea(),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 2000),
+                // ),
+                UnityWidget(
+                  onUnityCreated: _onUnityCreated,
+                  onUnityMessage: onUnityMessage,
+                ),
+                sliderArea(),
+              ],
+            )));
   }
 
-  // @override
-  Widget unityArea() {
+  Widget sliderArea() {
     return Positioned(
-      // body: Card(
-      //   margin: const EdgeInsets.all(8),
-      //   clipBehavior: Clip.antiAlias,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(20.0),
-      //   ),
-      // body: Column(
-      // child: Stack(
-      // children: <Widget>[
-      // UnityWidget(
-      //   onUnityCreated: _onUnityCreated,
-      //   isARScene: true,
-      // ),
-
-      // setRotationSpeed(_sliderValue.toString());
-
-      // Positioned(
+      // top: 350,
       bottom: 20,
       left: 20,
       right: 20,
@@ -63,14 +60,14 @@ class UnityPresentingState extends State<UnityPresentingWrapper> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: Text("Rotation speed:"),
+              child: Text("Force Applied:"),
             ),
             Slider(
               onChanged: (value) {
                 setState(() {
                   _sliderValue = value;
-                  sendUpdate(value.toString());
-                  // setRotationSpeed(_sliderValue.toString());
+                  setRotationSpeed(_sliderValue.toString());
+                  sendUpdate(_sliderValue.toString());
                 });
               },
               value: _sliderValue,
@@ -88,17 +85,23 @@ class UnityPresentingState extends State<UnityPresentingWrapper> {
   }
 
   Widget connectArea() {
-    return Card(
-      child: ListTile(
-        dense: true,
-        leading: Text("Connect to Server"),
-        trailing: RaisedButton(
-          child: Text((clientSocket != null) ? "Disconnect" : "Connect"),
-          onPressed:
-              (clientSocket != null) ? disconnectFromServer : connectToServer,
-        ),
-      ),
-    );
+    return Positioned(
+        top: 1,
+        bottom: 20,
+        left: 20,
+        right: 20,
+        child: Card(
+          child: ListTile(
+            dense: true,
+            leading: Text("Connect to Server"),
+            trailing: RaisedButton(
+              child: Text((clientSocket != null) ? "Disconnect" : "Connect"),
+              onPressed: (clientSocket != null)
+                  ? disconnectFromServer
+                  : connectToServer,
+            ),
+          ),
+        ));
   }
 
   void onUnityCreated(controller) {
