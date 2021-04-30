@@ -22,35 +22,34 @@ class Server(HTTPServer):
 
     def start(self):
 
-        # Presenter - 5005
-        # Viewer - 5006
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        self.s.bind((self.host, self.port))
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        s.bind((self.host, 5005))
         # Here we don't close the socket, therefore multiple clients can connect
-        print("Listening at", s.getsockname())
+        print("Listening at", self.s.getsockname())
 
-        sendData = self.msgSender()
+        # sendData = self.msgSender()
 
-        sendData.__next__()
+        # sendData.__next__()
         
+        threads = []
 
         try:
             while True:
-                data, addr = s.recvfrom(1024)
-                # print("Connected by", addr)
-                # threads.append(conn)
-                # t = threading.Thread( # we start a thread for each new client
-                #     target=self.handle_UDP_connection, args=(data), daemon=True)
-                # t.start()
-                msg = self.handle_request(data, [])
-                sendData.send(msg)
+                data, addr = self.s.recvfrom(1024)
+                print("Connected by", addr, " | Data", data)
+                threads.append(addr)
+                t = threading.Thread( # we start a thread for each new client
+                    target=self.handle_UDP_connection, args=(data, addr, threads), daemon=True)
+                t.start()
+                # msg = self.handle_request(data, [])
+                # sendData.send(msg)
 
         except KeyboardInterrupt:
-            sendData.close()
-            s.close()  # On pressing ctrl + c, we close all connections
+            # sendData.close()
+            self.s.close()  # On pressing ctrl + c, we close all connections
             quit()  # Then we shut down the server
 
 

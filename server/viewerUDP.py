@@ -8,20 +8,18 @@ import random
 
 class Client:
 
-    def start(self):
-        
-        # UDP_IP = '127.0.0.1'
-        UDP_PORT = 5006
-        BUFFER_SIZE = 1024
+    UDP_IP = '127.0.0.1'
+    UDP_SEND_PORT = 5005
+    BUFFER_SIZE = 1024
 
+    def start(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        s.bind(("", UDP_PORT))
+        msg = b"init"
+        s.sendto(msg, (self.UDP_IP, self.UDP_SEND_PORT))
 
         fileName = "data_udp/400/latencyViewerUDP{}.txt".format(random.randint(0, 10000))
         f = open(fileName, 'w')
-        
 
         try:
             while True:
@@ -29,7 +27,7 @@ class Client:
                 client_time = time.time()
                 data = data.decode('utf8')
                 t = data.split(":")[1]
-                # print("Difference by:", client_time - float(t))
+                print("Difference by:", client_time - float(t))
                 line = str(client_time - float(t)) + "\n"
                 f.write(line)
 
@@ -40,8 +38,8 @@ class Client:
             quit() # Then we shut down the server
 
 
-# if __name__ == '__main__':
-def run():
+if __name__ == '__main__':
+# def run():
     # try:
     #     client = ntplib.NTPClient()
     #     response = client.request('in.pool.ntp.org')
