@@ -1,28 +1,20 @@
-import 'package:aroip/widgets/theme.dart';
-import 'package:aroip/widgets/widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:aroip/screens/presenter.dart';
-import 'package:aroip/screens/viewer.dart';
+import 'dart:io';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
+import 'package:flutter/foundation.dart';
+// import 'package:web_socket_channel/io.dart';
+import 'package:flutter/material.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'tcp/client.dart';
+import 'tcp/server.dart';
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final title = 'WebSocket Demo';
     return MaterialApp(
-      title: 'AROiP',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff1F1F1F),
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      title: title,
       home: MyHomePage(title: 'Join AR Call'),
     );
   }
@@ -53,8 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        UnityPresentingWrapper())));
+                    builder: (BuildContext context) => SocketServer())));
               },
             ),
             MaterialButton(
@@ -62,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
-                    builder: (BuildContext context) => UnityViewingWrapper())));
+                    builder: (BuildContext context) => SocketClient())));
               },
             ),
           ],
@@ -71,65 +62,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: appBarMain(context),
-//       body: Container(
-//         padding: EdgeInsets.symmetric(horizontal: 24),
-//         child: Column(
-//           children: [
-//             Spacer(),
-//             Form(
-//               child: Column(
-//                 children: [
-//                   TextFormField(
-//                     style: simpleTextStyle(),
-//                     decoration: textFieldInputDecoration("Name"),
-//                   ),
-//                   TextFormField(
-//                     style: simpleTextStyle(),
-//                     decoration: textFieldInputDecoration("Conference ID"),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             SizedBox(
-//               height: 16,
-//             ),
-//             SizedBox(
-//               height: 16,
-//             ),
-//             GestureDetector(
-//               onTap: () {
-//                 //TODO
-//               },
-//               child: Container(
-//                 padding: EdgeInsets.symmetric(vertical: 16),
-//                 decoration: BoxDecoration(
-//                     borderRadius: BorderRadius.circular(30),
-//                     gradient: LinearGradient(
-//                       colors: [
-//                         const Color(0xff007EF4),
-//                         const Color(0xff2A75BC)
-//                       ],
-//                     )),
-//                 width: MediaQuery.of(context).size.width,
-//                 child: Text(
-//                   "Join In",
-//                   style: biggerTextStyle(),
-//                   textAlign: TextAlign.center,
-//                 ),
-//               ),
-//             ),
-//             SizedBox(
-//               height: 100,
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
