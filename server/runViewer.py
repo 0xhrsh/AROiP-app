@@ -1,9 +1,10 @@
 import threading
 import viewerUDP as v
 
-for x in range(400):
+num = 40
+for x in range(num):
     
-    t = threading.Thread(target=v.run, args=(), daemon=True) 
+    t = threading.Thread(target=v.run, args=([num]), daemon=True) 
     t.start()
     print("thread started", x)
 
