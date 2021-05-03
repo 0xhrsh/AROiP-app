@@ -44,8 +44,6 @@ class Server(HTTPServer):
                 t = threading.Thread( # we start a thread for each new client
                     target=self.handle_UDP_connection, args=(data, addr, threads), daemon=True)
                 t.start()
-                # msg = self.handle_request(data, [])
-                # sendData.send(msg)
 
         except KeyboardInterrupt:
             # sendData.close()

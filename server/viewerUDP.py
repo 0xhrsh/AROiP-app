@@ -2,6 +2,7 @@
 
 import socket
 import time
+import errno
 import os
 import ntplib
 import random
@@ -18,22 +19,37 @@ class Client:
         msg = b"init"
         s.sendto(msg, (self.UDP_IP, self.UDP_SEND_PORT))
 
-        fileName = "data_udp/400/latencyViewerUDP{}.txt".format(random.randint(0, 10000))
-        f = open(fileName, 'w')
-
+        # fileName = "data_udp/400/latencyViewerUDP{}.txt".format(random.randint(0, 10000))
+        # f = open(fileName, 'w')
+        i = 0
         try:
             while True:
-                data, addr = s.recvfrom(1024)
+                newestData = None
+                data = b''
+
+                while str(i) != data.decode().split(':')[0]:
+                    try:
+                        data, fromAddr = s.recvfrom(1024)
+                        if data:
+                            newestData = data
+                    except socket.error as why:
+                        if why.args[0] == errno.EWOULDBLOCK:
+                            break
+                        else:
+                            raise why
+
+                
                 client_time = time.time()
                 data = data.decode('utf8')
                 t = data.split(":")[1]
-                print("Difference by:", client_time - float(t))
+                print("Difference by:", client_time - float(t), i)
                 line = str(client_time - float(t)) + "\n"
-                f.write(line)
+                # f.write(line)
+                i += 1
 
 
         except KeyboardInterrupt:
-            f.close()
+            # f.close()
             s.close() # On pressing ctrl + c, we close all connections
             quit() # Then we shut down the server
 
