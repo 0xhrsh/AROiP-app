@@ -47,3 +47,5 @@ app.*.map.json
 
 # My Files
 google-services.json
+unity/Cube/Builds/**
+unity/Cube/Assets/Editor/Migration/**
