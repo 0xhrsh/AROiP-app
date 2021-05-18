@@ -4,7 +4,6 @@ import socket
 import time
 import os
 import ntplib
-import errno
 
 
 class Client:
@@ -14,35 +13,23 @@ class Client:
         TCP_IP = '192.168.1.69'
         TCP_PORT = 5005
         BUFFER_SIZE = 1024
-        SLEEP_TIME = 0.2
+        SLEEP_TIME = 0.010
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
 
-        i = 0
         try:
             while True:
                 client_time = time.time()
-                MESSAGE = str(i) + ":" + str(client_time)
+                MESSAGE = "" + str(client_time) + ":" + "Data"
                 s.send(MESSAGE.encode("utf8"))
-                
-                newestData = None
-                data = b':'
-                while str(i) != data.decode().split(':')[0]:
-                    try:
-                        data = s.recv(1024)
-                        if data:
-                            newestData = data
-                    except socket.error as why:
-                        if why.args[0] == errno.EWOULDBLOCK:
-                            break
-                        else:
-                            raise why
-                
-                # print(time.time() - client_time, i)
-                if(i%100==0):
-                    print(i)
-                i+=1
+                data = s.recv(1024).decode('utf8')
+                curr_time = time.time()
+                t = float(data.split(":")[0])
+                client_time = float(data.split(":")[1])
+                line = str(curr_time - client_time) + "\n"
+                #  + " " + str(curr_time - t) + " " + str(t - client_time)
+                # print(line)
                 time.sleep(SLEEP_TIME)
 
         except KeyboardInterrupt:

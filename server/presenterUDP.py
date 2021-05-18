@@ -10,10 +10,10 @@ class Client:
 
     def start(self):
         
-        UDP_IP = '192.168.1.69'
+        UDP_IP = '127.0.0.1'
         UDP_PORT = 5005
         BUFFER_SIZE = 1024
-        SLEEP_TIME = 0.2
+        SLEEP_TIME = 1
 
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -40,9 +40,8 @@ class Client:
                         else:
                             raise why
 
-                #print(time.time() - client_time, i)
-                if(i%100==0):
-                    print(i)
+                print(time.time() - client_time, i)
+                
                 time.sleep(SLEEP_TIME)
                 i += 1
 
