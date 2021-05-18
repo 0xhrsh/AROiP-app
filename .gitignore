@@ -46,3 +46,4 @@ app.*.map.json
 
 # My Files
 google-services.json
+VuforiaWrapper
