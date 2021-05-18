@@ -1,7 +1,8 @@
 import threading
-import viewerUDP as v
+# import viewerUDP as v
+import viewerTCP as v
 
-num = 40
+num = 100
 for x in range(num):
     
     t = threading.Thread(target=v.run, args=([num]), daemon=True) 

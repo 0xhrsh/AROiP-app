@@ -9,17 +9,19 @@ import random
 
 class Client:
 
-    UDP_IP = '127.0.0.1'
+    UDP_IP = '192.168.1.69'
     UDP_SEND_PORT = 5005
     BUFFER_SIZE = 1024
 
     def start(self, num):
+        print("Started")
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         msg = b"init"
         s.sendto(msg, (self.UDP_IP, self.UDP_SEND_PORT))
 
-        fileName = "data_udp/{}/latencyViewerUDP{}.txt".format(num, random.randint(0, 10000))
+        # fileName = "data_udp/{}/latencyViewerUDP{}.txt".format(num, random.randint(0, 10000))
+        fileName = "graph/data_udp/200/latencyViewer{}.txt".format(random.randint(0, 10000))
         f = open(fileName, 'w')
         i = 0
         try:
@@ -42,7 +44,7 @@ class Client:
                 client_time = time.time()
                 data = data.decode('utf8')
                 t = data.split(":")[1]
-                print("Difference by:", client_time - float(t), i)
+                #print("Difference by:", client_time - float(t), i)
                 line = str(client_time - float(t)) + "\n"
                 f.write(line)
                 i += 1

@@ -4,12 +4,13 @@ import socket
 import time
 import os
 import ntplib
+import errno
 import random
 
 
 class Client:
 
-    def start(self):
+    def start(self, num):
 
         TCP_IP = '192.168.1.69'
         TCP_PORT = 5005
@@ -18,24 +19,53 @@ class Client:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
 
-        fileName = "data_tcp/50/latencyViewerTCP{}.txt".format(random.randint(0, 10000))
+        # fileName = "data_tcp/{}/latencyViewerTCP{}.txt".format(num, random.randint(0, 10000))
+        fileName = "graph/data_tcp/200/latencyViewer{}.txt".format(random.randint(0, 10000))
         f = open(fileName, 'w')
 
+        i = 0
         try:
             while True:
-                data = s.recv(1024).decode('utf8')
+                newestData = None
+                data = b':'
+                # while str(i) != data.decode().split(':')[0]:
+                #     try:
+                #         data = s.recv(1024)
+                #         print(data)
+                #         if data:
+                #             newestData = data
+                #     except socket.error as why:
+                #         if why.args[0] == errno.EWOULDBLOCK:
+                #             break
+                #         else:
+                #             raise why
+                
+                data = s.recv(1024)
+                if(len(data.split())==1):
+                    newestData = data.split()[-1]
+                else:
+                    newestData = data.split()[-2]
+
+                # print(newestData)
                 client_time = time.time()
-                t = data.split(":")[1]
+                try:
+                    t = newestData.decode().split(":")[1]
+                except:
+                    continue
                 line = str(client_time - float(t)) + "\n"
                 f.write(line)
-                # print(line)
+                # print(client_time - float(t), i)
+                
+                i+=1
+                
 
         except KeyboardInterrupt:
+            f.close()
             s.close()  # On pressing ctrl + c, we close all connections
             quit()  # Then we shut down the server
 
 
-def run():
+def run(num):
     # try:
     #     client = ntplib.NTPClient()
     #     response = client.request('in.pool.ntp.org')
@@ -44,4 +74,4 @@ def run():
     # except:
     #     print('Could not sync with time server.')
     client = Client()
-    client.start()
+    client.start(num)

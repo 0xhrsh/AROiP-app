@@ -1,11 +1,13 @@
 import glob   
-path = 'data_udp/400/latencyViewerUDP*'
+
+path = 'data_udp/100/latencyViewer*'
 files=glob.glob(path)   
 total = 0
 n = 0
 fn = 0
 ve = 0
-# print(files) 
+
+
 for file in files:     
     f=open(file, 'r')  
     lines = f.readlines()   
