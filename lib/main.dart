@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:aroip/screens/presenter.dart';
 import 'package:aroip/screens/viewer.dart';
-import 'package:aroip/screens/presenter_lungs.dart';
-import 'package:aroip/screens/viewer_lungs.dart';
+import 'package:aroip/screens/presenter_udp.dart';
+import 'package:aroip/screens/viewer_udp.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,21 +65,21 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             MaterialButton(
-              child: Text("Teacher Lungs"),
+              child: Text("Teacher UDP"),
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
                     builder: (BuildContext context) =>
-                        UnityPresentingWrapperL())));
+                        UnityPresentingWrapperUDP())));
               },
             ),
             MaterialButton(
-              child: Text("Student Lungs"),
+              child: Text("Student UDP"),
               minWidth: double.infinity,
               onPressed: () async {
                 Navigator.of(context).push((MaterialPageRoute(
                     builder: (BuildContext context) =>
-                        UnityViewingWrapperL())));
+                        UnityViewingWrapperUDP())));
               },
             ),
           ],
